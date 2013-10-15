@@ -1,0 +1,75 @@
+<div id='main_body'>
+<% if false %>
+<%= render inline: ERB.new(@erb_code).result(binding) %>
+<% end %>
+<% if true %>
+<h4>客户交流记录内容</h4>
+ 
+<p class="notice"><%= notice %></p>
+
+<p>
+  <b>客户名称:</b>
+  <%= @customer.name %>
+</p> 
+
+<p>
+  <b>联系人:</b>
+  <%= @customer_comm_record.reported_by.name %>
+</p>
+
+<p>
+  <b>联系日期:</b>
+  <%= @customer_comm_record.comm_date.strftime("%Y/%m/%d") %>
+</p> 
+<p>
+  <b>联系分类:</b>
+  <%= @customer_comm_record.comm_category.try(:name) if @customer_comm_record.comm_category_id.present? %>
+</p> 
+<p>
+  <b>关于:</b>
+  <%= @customer_comm_record.subject %>
+</p>
+ 
+<p>
+  <b>客户联系人名&电话:</b>
+  <%= @customer_comm_record.contact_info %>
+</p>
+<p>
+  <b>内容:</b>
+  <%= @customer_comm_record.content %>
+</p>
+ 
+<p>
+  <b>联系方式:</b>
+  <%= @customer_comm_record.via %>
+</p>
+<p>
+  <b>删除:</b>
+  <%= @customer_comm_record.void %>
+</p> 
+<p>
+  <b>输入/更改:</b>
+  <%= @customer_comm_record.last_updated_by.name %>
+</p>
+<p>
+  <b>Logs:</b>	
+    <ul>
+  <% Commonx::Log.where('resource_id = ? AND resource_name = ?', @customer_comm_record.id, params[:controller].sub('/', '_')).order("created_at DESC").each do |p| %>
+    <li>
+    <%= (p.created_at + 8.hours).strftime("%Y-%m-%d").to_s + ', ' + p.last_updated_by.name + '， ' + p.log %>
+    </li>
+  <% end %>
+  </ul>
+</p>
+
+<table class="table table-striped">
+  <tr>
+    <th>
+    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<%= link_to '新Log', SUBURI + commonx.new_log_path(:resource_id => @customer_comm_record.id, :resource_name => params[:controller], :subaction => 'customer_comm_record', :format => :js), 
+               :remote => true, :id => 'new_log_link', :class => BUTTONS_CLS['action'] if has_action_right?('create_customer_comm_record', 'commonx_logs') %>    </th>
+  </tr>
+</table>
+<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
+<% end %>
+</div>

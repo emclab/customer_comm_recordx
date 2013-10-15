@@ -1,0 +1,10 @@
+<div id='main_body'>
+<h4>新客户联系记录</h4>
+<% if @customer %>
+  <%= render 'form_new' %>
+<% else %>
+  <%= render 'form_new_without_customer' %>
+<% end %>
+
+<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+</div>
