@@ -1,8 +1,9 @@
-<div id='main_body'>
 <% if false %>
-<%= render inline: ERB.new(@erb_code).result(binding) %>
-<% end %>
-<% if true %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+<div id='main_body'>
+
 <h4>客户交流记录内容</h4>
  
 <p class="notice"><%= notice %></p>
@@ -71,5 +72,7 @@
   </tr>
 </table>
 <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
-<% end %>
+
 </div>
+
+<% end %>

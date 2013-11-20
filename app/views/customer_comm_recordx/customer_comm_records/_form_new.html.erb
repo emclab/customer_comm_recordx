@@ -1,3 +1,7 @@
+<% if false %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
 <%= simple_form_for(@customer_comm_record) do |f| %>    
  
   <%= f.input :comm_date, :label => t("Date:"), :as => :string%>
@@ -8,5 +12,9 @@
   <%= f.input :content, :label => "联系内容 ：", :input_html => {:rows => 4} %>   
   <%= f.input :comm_category_id, :label => "联系分类： ", :collection => Commonx::MiscDefinition.where(:for_which => 'customer_comm_category').where(:active => true).order("ranking_index"),
               :include_blank => true %>  
+  
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
   <%= f.button :submit, '保存', :class => BUTTONS_CLS['action'] %>  
 <% end %> 
+
+<% end %>
