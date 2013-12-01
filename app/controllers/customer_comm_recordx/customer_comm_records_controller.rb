@@ -38,8 +38,7 @@ module CustomerCommRecordx
     end
   
     def edit
-      @customer_comm_record = CustomerCommRecordx::CustomerCommRecord.find_by_id(params[:id])
-      
+      @customer_comm_record = CustomerCommRecordx::CustomerCommRecord.find_by_id(params[:id])      
     end
   
     def update

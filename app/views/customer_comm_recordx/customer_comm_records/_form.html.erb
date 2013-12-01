@@ -5,29 +5,30 @@
 <%= simple_form_for(@customer_comm_record) do |f| %>    
  
   <%= f.input :customer_name, :label => t('Customer Name:'), :readonly => true, :required => false, :input_html => {:value => @customer.name} %> 
-  <%= f.input :subject, :label => "关于：", :readonly => readonly?(@customer_comm_record, 'subject') %>  
-  <%= f.input :contact_info, :label => "联系人&电话： ", :readonly => readonly?(@customer_comm_record, 'contact_info') %> 
+  <%= f.input :comm_date, :label => t("Contact Date"), :as => :string, :readonly => readonly?(@customer_comm_record, 'comm_date') %>
+  <%= f.input :subject, :label => t('About'), :readonly => readonly?(@customer_comm_record, 'subject') %>  
+  <%= f.input :contact_info, :label => t('Contact Info'), :readonly => readonly?(@customer_comm_record, 'contact_info') %> 
   <% if readonly?(@customer_comm_record, 'via')%>
-    <%= f.input :via_noupdate, :label => "联系方式： ", :readonly => true, :input_html => {:value => @customer_comm_record.via}, :required => false %> 
+    <%= f.input :via_noupdate, :label => t('Contact Via'), :readonly => true, :input_html => {:value => @customer_comm_record.via}, :required => false %> 
   <% else %>
-    <%= f.input :via, :label => "联系方式： ", :collection => contact_via %>
+    <%= f.input :via, :label => t('Contact Via'), :collection => contact_via %>
   <% end %>
-  <%= f.input :content, :label => "联系内容 ：", :input_html => {:rows => 4}, :readonly => readonly?(@customer_comm_record, 'content') %>   
-  <%= f.input :comm_category_id, :label => "联系分类： ", :collection => Commonx::MiscDefinition.where(:for_which => 'customer_comm_category').where(:active => true).order("ranking_index") %>  
+  <%= f.input :content, :label => t('Content'), :input_html => {:rows => 4}, :readonly => readonly?(@customer_comm_record, 'content') %>   
+  <%= f.input :comm_category_id, :label => t('Comm Category'), :collection => Commonx::MiscDefinition.where(:for_which => 'customer_comm_category').where(:active => true).order("ranking_index") %>  
   <% if has_action_right?('void', 'customer_comm_recordx_customer_comm_records') %>
-    <%= f.input :void, :label => '无效：', :collection => [['Yes', true],['No',false]] %>
+    <%= f.input :void, :label => t('Void'), :collection => [['Yes', true],['No',false]] %>
   <% else %>
-    <%= f.input :void_name, :label => '无效：', :input_html => {:value => @customer_comm_record.void.present? ? t('Yes') : t('No')}, :readonly => true, :required => false %>
+    <%= f.input :void_name, :label => t('Void'), :input_html => {:value => @customer_comm_record.void.present? ? t('Yes') : t('No')}, :readonly => true, :required => false %>
   <% end %>
   <% if readonly?(@customer_comm_record, 'reported_by_id')%>
-    <%= f.input :reported_by_name, :label => '初始联系人：', :input_html => {:value => @customer_comm_record.reported_by.name }, :readonly => true, :required => false %>
+    <%= f.input :reported_by_name, :label => t('Reported By'), :input_html => {:value => @customer_comm_record.reported_by.name }, :readonly => true, :required => false %>
   <% else %>
-    <%= f.input :reported_by_id, :label => '初始联系人：', :collection => Authentify::UsersHelper.return_users('create', 'customer_comm_recordx_customer_comm_records'),
+    <%= f.input :reported_by_id, :label => t('Reported By'), :collection => Authentify::UsersHelper.return_users('create', 'customer_comm_recordx_customer_comm_records'),
                                                        :label_method => lambda {|r| "#{r.name}-#{r.user_levels.first.sys_user_group.zone.zone_name}"}, :value_method => :id%>
   <% end %>
   
   <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
-  <%= f.button :submit, '保存', :class => BUTTONS_CLS['action'] %>  
+  <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
 <% end %> 
 
 <% end %>

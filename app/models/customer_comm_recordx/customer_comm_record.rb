@@ -20,12 +20,9 @@ module CustomerCommRecordx
     belongs_to :reported_by, :class_name => 'Authentify::User'   
     has_many :logs, :class_name => "Commonx::Log" 
     
-    validates_presence_of :subject, :contact_info, :content, :reported_by_id, :via, :comm_category_id, :comm_date, :customer_id
-    validates :content, :uniqueness => {:case_sensitive => false}  
-    
-    def find_customer_comm_records
-      records = CustomerCommRecordx.where('comm_date > ?', 6.years.ago).order('comm_date DESC')
-    end
+    validates :subject, :contact_info, :reported_by_id, :via, :comm_category_id, :comm_date, :customer_id, :presence => true
+    validates :reported_by_id, :comm_category_id, :customer_id, :presence => true, :numericality => {:greater_than => 0}
+    validates :content, :presence => true, :uniqueness => {:scope => :customer_id, :case_sensitive => false, :message => I18n.t('Duplicate Content')}  
     
     def customer_name_autocomplete
       self.customer.try(:name)

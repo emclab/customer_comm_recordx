@@ -4,52 +4,52 @@
 <% else %>
 <div id='main_body'>
 
-<h4>客户交流记录内容</h4>
+<h4><%=t('Customer Comm Record Info')%></h4>
  
 <p class="notice"><%= notice %></p>
 
 <p>
-  <b>客户名称:</b>
+  <b><%=t('Customer')%>:</b>
   <%= @customer.name %>
 </p> 
 
 <p>
-  <b>联系人:</b>
+  <b><%=t('Reported By')%>:</b>
   <%= @customer_comm_record.reported_by.name %>
 </p>
 
 <p>
-  <b>联系日期:</b>
+  <b><%=t('Contact Date')%>:</b>
   <%= @customer_comm_record.comm_date.strftime("%Y/%m/%d") %>
 </p> 
 <p>
-  <b>联系分类:</b>
+  <b><%=t('Contact Via')%>:</b>
   <%= @customer_comm_record.comm_category.try(:name) if @customer_comm_record.comm_category_id.present? %>
 </p> 
 <p>
-  <b>关于:</b>
+  <b><%=t('About')%>:</b>
   <%= @customer_comm_record.subject %>
 </p>
  
 <p>
-  <b>客户联系人名&电话:</b>
+  <b><%=t('Contact Info')%>:</b>
   <%= @customer_comm_record.contact_info %>
 </p>
 <p>
-  <b>内容:</b>
+  <b><%=t('Content')%>:</b>
   <%= @customer_comm_record.content %>
 </p>
  
 <p>
-  <b>联系方式:</b>
+  <b><%=t('Comm Category')%>:</b>
   <%= @customer_comm_record.via %>
 </p>
 <p>
-  <b>删除:</b>
+  <b><%=t('Void') %>:</b>
   <%= @customer_comm_record.void %>
 </p> 
 <p>
-  <b>输入/更改:</b>
+  <b><%=t('Last Updated By')%>:</b>
   <%= @customer_comm_record.last_updated_by.name %>
 </p>
 <p>

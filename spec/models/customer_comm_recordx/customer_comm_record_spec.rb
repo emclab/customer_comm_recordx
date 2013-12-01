@@ -22,19 +22,25 @@ module CustomerCommRecordx
       r.should_not be_valid
     end
     
-    it "should reject nil reported_by_id" do
-      r = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :reported_by_id => nil)
+    it "should reject 0 reported_by_id" do
+      r = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :reported_by_id => 0)
       r.should_not be_valid
     end
     
-    it "shold reject dup content" do
+    it "shold reject dup content for the same customer" do
       r = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :content => 'this is a test')
       r1 = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :content => 'This Is A Test')
       r1.should_not be_valid
     end
     
-    it "should reject nil comm category id" do
-      r = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :comm_category_id => nil)
+    it "shold be OK with dup content for different customer" do
+      r = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :content => 'this is a test')
+      r1 = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :content => 'This Is A Test', :customer_id => r.customer_id + 1)
+      r1.should be_valid
+    end
+    
+    it "should reject 0 comm category id" do
+      r = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :comm_category_id => 0)
       r.should_not be_valid
     end
     
@@ -43,8 +49,8 @@ module CustomerCommRecordx
       r.should_not be_valid
     end
     
-    it "should reject nil customer_id" do
-      r = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :customer_id => nil)
+    it "should reject 0 customer_id" do
+      r = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :customer_id => 0)
       r.should_not be_valid
     end
   end

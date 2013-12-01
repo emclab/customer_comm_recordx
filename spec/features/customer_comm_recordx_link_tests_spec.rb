@@ -105,12 +105,13 @@ describe "LinkTests" do
     
     it "should display comm record edit page" do
       visit edit_customer_comm_record_path(@cust, @crecord)
-      page.should have_content('修改客户联系记录')
+      page.should have_content('Update Customer Comm Record')
     end
     
     it "should show customer_comm_record page" do
       visit customer_comm_record_path(@cust, @crecord)
-      page.should have_content('客户交流记录内容')
+      #save_and_open_page
+      page.should have_content('Customer Comm Record Info')
     end
   end
 end
