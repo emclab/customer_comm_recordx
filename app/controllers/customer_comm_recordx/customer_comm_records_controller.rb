@@ -69,6 +69,7 @@ module CustomerCommRecordx
     def load_customer
       @customer = CustomerCommRecordx.customer_class.find_by_id(params[:customer_id]) if params[:customer_id].present?
       @customer = CustomerCommRecordx.customer_class.find_by_id(CustomerCommRecordx::CustomerCommRecord.find_by_id(params[:id]).customer_id) if params[:id].present?
+      @customer = CustomerCommRecordx.customer_class.find_by_id(params[:customer_comm_record][:customer_id]) if params[:customerCommRecord].present? && params[:customer_comm_record][:customer_id].present?
     end
   end
 end
