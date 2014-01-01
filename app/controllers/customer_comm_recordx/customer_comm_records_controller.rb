@@ -22,6 +22,7 @@ module CustomerCommRecordx
   
     def create
       @customer_comm_record = CustomerCommRecordx::CustomerCommRecord.new(params[:customer_comm_record], :as => :role_new)
+      @customer = CustomerCommRecordx.customer_class.find_by_id(params[:customer_comm_record][:customer_id]) if params[:customer_comm_record].present? && params[:customer_comm_record][:customer_id].present?
       unless @customer
         cust = CustomerCommRecordx.customer_class.find_by_name(@customer_comm_record.customer_name_autocomplete) if @customer_comm_record.customer_name_autocomplete.present?
         @customer_comm_record.customer_id = cust.id if cust.present?
@@ -69,7 +70,6 @@ module CustomerCommRecordx
     def load_customer
       @customer = CustomerCommRecordx.customer_class.find_by_id(params[:customer_id]) if params[:customer_id].present?
       @customer = CustomerCommRecordx.customer_class.find_by_id(CustomerCommRecordx::CustomerCommRecord.find_by_id(params[:id]).customer_id) if params[:id].present?
-      @customer = CustomerCommRecordx.customer_class.find_by_id(params[:customer_comm_record][:customer_id]) if params[:customerCommRecord].present? && params[:customer_comm_record][:customer_id].present?
     end
   end
 end
