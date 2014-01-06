@@ -29,7 +29,7 @@ module CustomerCommRecordx
     end
 
     def customer_name_autocomplete=(name)
-      self.customer = CustomerCommRecordx.find_by_name(name) if name.present?
+      self.customer = CustomerCommRecordx.customer_class.find_by_name(name) if name.present?
     end
     
     scope :not_void, where(:void => false)
