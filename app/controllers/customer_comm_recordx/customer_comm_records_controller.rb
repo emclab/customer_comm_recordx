@@ -17,7 +17,8 @@ module CustomerCommRecordx
   
     def new
       @title= "新客户联系记录"
-      @customer_comm_record = CustomerCommRecordx::CustomerCommRecord.new()       
+      @customer_comm_record = CustomerCommRecordx::CustomerCommRecord.new() 
+      @erb_code = find_config_const('customer_comm_record_new_view', 'customer_comm_recordx')      
     end
   
     def create
@@ -32,6 +33,7 @@ module CustomerCommRecordx
       if @customer_comm_record.save
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
       else
+        @erb_code = find_config_const('customer_comm_record_new_view', 'customer_comm_recordx')  
         flash.now[:error] = t('Data Error. Not Saved!')
         render 'new'
       end
@@ -39,7 +41,8 @@ module CustomerCommRecordx
     end
   
     def edit
-      @customer_comm_record = CustomerCommRecordx::CustomerCommRecord.find_by_id(params[:id])      
+      @customer_comm_record = CustomerCommRecordx::CustomerCommRecord.find_by_id(params[:id])  
+      @erb_code = find_config_const('customer_comm_record_edit_view', 'customer_comm_recordx')      
     end
   
     def update
@@ -48,6 +51,7 @@ module CustomerCommRecordx
       if @customer_comm_record.update_attributes(params[:customer_comm_record], :as => :role_update)
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       else
+        @erb_code = find_config_const('customer_comm_record_edit_view', 'customer_comm_recordx')
         flash.now[:error] = t('Data Error. Not Updated!')
         render 'edit'
       end
