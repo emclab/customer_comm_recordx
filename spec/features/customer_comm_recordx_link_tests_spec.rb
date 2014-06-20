@@ -61,18 +61,16 @@ describe "LinkTests" do
       @ccate = FactoryGirl.create(:commonx_misc_definition, :for_which => 'customer_comm_category', :active => true, :last_updated_by_id => @u.id)
       @ccate1 = FactoryGirl.create(:commonx_misc_definition, :for_which => 'customer_status', :name => 'new', :active => true, :last_updated_by_id => @u.id)
       @ccate2 = FactoryGirl.create(:commonx_misc_definition, :for_which => 'quality_system', :name => 'nnew', :active => true, :last_updated_by_id => @u.id)
-      @crecord = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => @cust.id, :comm_category_id => @ccate.id)
-      @payment_terms_config = FactoryGirl.create(:engine_config, :engine_name => 'kustomerx', :engine_version => nil, :argument_name => 'customer_index_view', 
-                              :argument_value => Authentify::AuthentifyUtility.find_config_const('customer_index_view', 'customerx')) 
-      @payment_terms_config = FactoryGirl.create(:engine_config, :engine_name => 'customer_comm_recordx', :engine_version => nil, :argument_name => 'customer_comm_record_index_view', 
-                              :argument_value => Authentify::AuthentifyUtility.find_config_const('cusotmer_comm_record_index_view', 'customerx')) 
-      @payment_terms_config = FactoryGirl.create(:engine_config, :engine_name => 'customer_comm_recordx', :engine_version => nil, :argument_name => 'customer_comm_record_log_index_view', 
-                              :argument_value => Authentify::AuthentifyUtility.find_config_const('customer_comm_record_log_index_view', 'customerx')) 
+      #@payment_terms_config = FactoryGirl.create(:engine_config, :engine_name => 'kustomerx', :engine_version => nil, :argument_name => 'customer_index_view', 
+      #                        :argument_value => Authentify::AuthentifyUtility.find_config_const('customer_index_view', 'customerx')) 
+      ##                        :argument_value => Authentify::AuthentifyUtility.find_config_const('cusotmer_comm_record_index_view', 'customerx')) 
+      #@payment_terms_config = FactoryGirl.create(:engine_config, :engine_name => 'customer_comm_recordx', :engine_version => nil, :argument_name => 'customer_comm_record_log_index_view', 
+       #                       :argument_value => Authentify::AuthentifyUtility.find_config_const('customer_comm_record_log_index_view', 'customerx')) 
       
-      @payment_terms_config = FactoryGirl.create(:engine_config, :engine_name => 'kustomerx', :engine_version => nil, :argument_name => 'customer_show_view', 
-                              :argument_value => Authentify::AuthentifyUtility.find_config_const('customer_show_view', 'customerx')) 
-      @payment_terms_config = FactoryGirl.create(:engine_config, :engine_name => 'customer_comm_recordx', :engine_version => nil, :argument_name => 'customer_comm_record_show_view', 
-                              :argument_value => Authentify::AuthentifyUtility.find_config_const('cusotmer_comm_record_show_view', 'customerx')) 
+      #@payment_terms_config = FactoryGirl.create(:engine_config, :engine_name => 'kustomerx', :engine_version => nil, :argument_name => 'customer_show_view', 
+       #                       :argument_value => Authentify::AuthentifyUtility.find_config_const('customer_show_view', 'customerx')) 
+      #@payment_terms_config = FactoryGirl.create(:engine_config, :engine_name => 'customer_comm_recordx', :engine_version => nil, :argument_name => 'customer_comm_record_show_view', 
+        #                      :argument_value => Authentify::AuthentifyUtility.find_config_const('cusotmer_comm_record_show_view', 'customerx')) 
                                                                            
       visit '/'
       #save_and_open_page
@@ -81,20 +79,15 @@ describe "LinkTests" do
       click_button 'Login'
     end
     
-    it "works! (now write some real specs)" do
-      # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
-      visit customer_comm_records_path
-      page.should have_content('Comm Records')
-    end
-    
     it "should display customer_comm_record index page" do
       visit customer_comm_records_path
       page.should have_content('Customer Comm Records')
     end
     
     it "should work with links on customer comm record index page" do
+      crecord = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => @cust.id, :comm_category_id => @ccate.id, :via => 'phone')
       visit customer_comm_records_path
-      click_link @crecord.id.to_s
+      click_link crecord.id.to_s
       visit customer_comm_records_path
       click_link 'New Customer Comm Record'
       #visit customer_comm_records_path
@@ -103,13 +96,59 @@ describe "LinkTests" do
       click_link 'Edit'
     end
     
-    it "should display comm record edit page" do
-      visit edit_customer_comm_record_path(@cust, @crecord)
+    it "should create/edit comm record" do
+      crecord = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => @cust.id, :comm_category_id => @ccate.id, :via => 'phone')
+      visit customer_comm_records_path(:customer_id => @cust.id)
+      save_and_open_page
+      click_link 'Edit'
+      save_and_open_page
       page.should have_content('Update Customer Comm Record')
+      fill_in 'customer_comm_record_subject', :with => 'a new subject'
+      click_button 'Save'
+      visit customer_comm_records_path(:customer_id => @cust.id)
+      save_and_open_page
+      page.should have_content('a new subject')
+      #bad data
+      visit customer_comm_records_path(:customer_id => @cust.id)
+      click_link 'Edit'
+      fill_in 'customer_comm_record_content', :with => ''
+      fill_in 'customer_comm_record_subject', :with => 'a sucker change'
+      click_button 'Save'
+      visit customer_comm_records_path(:customer_id => @cust.id)
+      page.should_not have_content('a sucker change')
+      
+      #new
+      visit customer_comm_records_path(:customer_id => @cust.id)
+      click_link 'New Customer Comm Record'
+      page.should have_content('New Customer Comm Record')
+      fill_in 'customer_comm_record_content', :with => 'content'
+      fill_in 'customer_comm_record_subject', :with => 'a new sucker'
+      select('phone', :from => 'customer_comm_record_via')
+      select(@ccate.name, :from => 'customer_comm_record_comm_category_id')
+      fill_in 'customer_comm_record_comm_date', :with => Date.today
+      fill_in 'customer_comm_record_contact_info', :with => 'a guy'
+      click_button 'Save'
+      save_and_open_page
+      visit customer_comm_records_path(:customer_id => @cust.id)      
+      page.should have_content('a new sucker')
+      #bad data
+      visit customer_comm_records_path(:customer_id => @cust.id)
+      click_link 'New Customer Comm Record'
+      page.should have_content('New Customer Comm Record')
+      fill_in 'customer_comm_record_content', :with => ''
+      fill_in 'customer_comm_record_subject', :with => 'a new new sucker'
+      select('phone', :from => 'customer_comm_record_via')
+      select(@ccate.name, :from => 'customer_comm_record_comm_category_id')
+      fill_in 'customer_comm_record_contact_info', :with => 'a guy'
+      fill_in 'customer_comm_record_comm_date', :with => Date.today
+      click_button 'Save'
+      visit customer_comm_records_path(:customer_id => @cust.id)
+      page.should_not have_content('a new new sucker')
     end
     
     it "should show customer_comm_record page" do
-      visit customer_comm_record_path(@cust, @crecord)
+      crecord = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => @cust.id, :comm_category_id => @ccate.id, :via => 'phone')
+      visit customer_comm_record_path(@cust, crecord)
       #save_and_open_page
       page.should have_content('Customer Comm Record Info')
     end

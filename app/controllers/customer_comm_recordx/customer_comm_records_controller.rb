@@ -23,16 +23,12 @@ module CustomerCommRecordx
   
     def create
       @customer_comm_record = CustomerCommRecordx::CustomerCommRecord.new(params[:customer_comm_record], :as => :role_new)
-      @customer = CustomerCommRecordx.customer_class.find_by_id(params[:customer_comm_record][:customer_id]) if params[:customer_comm_record].present? && params[:customer_comm_record][:customer_id].present?
-      unless @customer
-        cust = CustomerCommRecordx.customer_class.find_by_name(@customer_comm_record.customer_name_autocomplete) if @customer_comm_record.customer_name_autocomplete.present?
-        @customer_comm_record.customer_id = cust.id if cust.present?
-      end
       @customer_comm_record.last_updated_by_id = session[:user_id]
       @customer_comm_record.reported_by_id = session[:user_id]
       if @customer_comm_record.save
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
       else
+        @customer = CustomerCommRecordx.customer_class.find_by_id(params[:customer_comm_record][:customer_id]) if params[:customer_comm_record].present? && params[:customer_comm_record][:customer_id].present?
         @erb_code = find_config_const('customer_comm_record_new_view', 'customer_comm_recordx')  
         flash.now[:error] = t('Data Error. Not Saved!')
         render 'new'
