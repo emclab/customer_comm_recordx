@@ -61,17 +61,7 @@ describe "LinkTests" do
       @ccate = FactoryGirl.create(:commonx_misc_definition, :for_which => 'customer_comm_category', :active => true, :last_updated_by_id => @u.id)
       @ccate1 = FactoryGirl.create(:commonx_misc_definition, :for_which => 'customer_status', :name => 'new', :active => true, :last_updated_by_id => @u.id)
       @ccate2 = FactoryGirl.create(:commonx_misc_definition, :for_which => 'quality_system', :name => 'nnew', :active => true, :last_updated_by_id => @u.id)
-      #@payment_terms_config = FactoryGirl.create(:engine_config, :engine_name => 'kustomerx', :engine_version => nil, :argument_name => 'customer_index_view', 
-      #                        :argument_value => Authentify::AuthentifyUtility.find_config_const('customer_index_view', 'customerx')) 
-      ##                        :argument_value => Authentify::AuthentifyUtility.find_config_const('cusotmer_comm_record_index_view', 'customerx')) 
-      #@payment_terms_config = FactoryGirl.create(:engine_config, :engine_name => 'customer_comm_recordx', :engine_version => nil, :argument_name => 'customer_comm_record_log_index_view', 
-       #                       :argument_value => Authentify::AuthentifyUtility.find_config_const('customer_comm_record_log_index_view', 'customerx')) 
-      
-      #@payment_terms_config = FactoryGirl.create(:engine_config, :engine_name => 'kustomerx', :engine_version => nil, :argument_name => 'customer_show_view', 
-       #                       :argument_value => Authentify::AuthentifyUtility.find_config_const('customer_show_view', 'customerx')) 
-      #@payment_terms_config = FactoryGirl.create(:engine_config, :engine_name => 'customer_comm_recordx', :engine_version => nil, :argument_name => 'customer_comm_record_show_view', 
-        #                      :argument_value => Authentify::AuthentifyUtility.find_config_const('cusotmer_comm_record_show_view', 'customerx')) 
-                                                                           
+                                                                    
       visit '/'
       #save_and_open_page
       fill_in "login", :with => @u.login
@@ -81,7 +71,7 @@ describe "LinkTests" do
     
     it "should display customer_comm_record index page" do
       visit customer_comm_records_path
-      page.should have_content('Customer Comm Records')
+      page.should have_content('Communication Records')
     end
     
     it "should work with links on customer comm record index page" do
@@ -102,7 +92,7 @@ describe "LinkTests" do
       save_and_open_page
       click_link 'Edit'
       save_and_open_page
-      page.should have_content('Update Customer Comm Record')
+      page.should have_content('Update Communication Record')
       fill_in 'customer_comm_record_subject', :with => 'a new subject'
       click_button 'Save'
       visit customer_comm_records_path(:customer_id => @cust.id)
@@ -120,7 +110,7 @@ describe "LinkTests" do
       #new
       visit customer_comm_records_path(:customer_id => @cust.id)
       click_link 'New Customer Comm Record'
-      page.should have_content('New Customer Comm Record')
+      page.should have_content('New Communication Record')
       fill_in 'customer_comm_record_content', :with => 'content'
       fill_in 'customer_comm_record_subject', :with => 'a new sucker'
       select('phone', :from => 'customer_comm_record_via')
@@ -134,7 +124,7 @@ describe "LinkTests" do
       #bad data
       visit customer_comm_records_path(:customer_id => @cust.id)
       click_link 'New Customer Comm Record'
-      page.should have_content('New Customer Comm Record')
+      page.should have_content('New Communication Record')
       fill_in 'customer_comm_record_content', :with => ''
       fill_in 'customer_comm_record_subject', :with => 'a new new sucker'
       select('phone', :from => 'customer_comm_record_via')
@@ -150,7 +140,7 @@ describe "LinkTests" do
       crecord = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => @cust.id, :comm_category_id => @ccate.id, :via => 'phone')
       visit customer_comm_record_path(@cust, crecord)
       #save_and_open_page
-      page.should have_content('Customer Comm Record Info')
+      page.should have_content('Communication Record Info')
     end
   end
 end

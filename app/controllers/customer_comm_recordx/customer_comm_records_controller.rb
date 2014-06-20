@@ -8,7 +8,7 @@ module CustomerCommRecordx
     helper_method :contact_via
     
     def index
-      @title= "客户联系记录"
+      @title= t("Communication Records")
       @customer_comm_records = params[:customer_comm_recordx_customer_comm_records][:model_ar_r]
       @customer_comm_records = @customer_comm_records.where(:customer_id => @customer.id) if @customer
       @customer_comm_records = @customer_comm_records.page(params[:page]).per_page(@max_pagination)
@@ -16,7 +16,7 @@ module CustomerCommRecordx
     end
   
     def new
-      @title= "新客户联系记录"
+      @title = t("New Communication Record")
       @customer_comm_record = CustomerCommRecordx::CustomerCommRecord.new() 
       @erb_code = find_config_const('customer_comm_record_new_view', 'customer_comm_recordx')      
     end
@@ -37,6 +37,7 @@ module CustomerCommRecordx
     end
   
     def edit
+      @title = t("Update Communication Record")
       @customer_comm_record = CustomerCommRecordx::CustomerCommRecord.find_by_id(params[:id])  
       @erb_code = find_config_const('customer_comm_record_edit_view', 'customer_comm_recordx')      
     end
@@ -55,6 +56,7 @@ module CustomerCommRecordx
     end
   
     def show
+      @title = t('Communication Record Info')
       @customer_comm_record = CustomerCommRecordx::CustomerCommRecord.find_by_id(params[:id])
       @erb_code = find_config_const('customer_comm_record_show_view', 'customer_comm_recordx')
     end
