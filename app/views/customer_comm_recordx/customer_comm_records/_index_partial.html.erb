@@ -43,9 +43,9 @@
     	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    	<%#= link_to t('New Customer Comm Record'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI::escape(new_customer_comm_record_path())}", :class => BUTTONS_CLS['action'] if @customer.nil? && has_action_right?('create', params[:controller]) %>
+    	<%= link_to t('New Customer Comm Record'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI::escape(new_customer_comm_record_path())}", :class => BUTTONS_CLS['action'] if @customer.nil? && has_action_right?('create', params[:controller]) %>
     	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <%#= link_to t('New Customer Comm Record'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI::escape(new_customer_comm_record_path(:customer_id => @customer.id, :parent_record_id => @customer.id, :parent_resource => CustomerCommRecordx.customer_class.to_s.underscore.pluralize))}", :class => BUTTONS_CLS['action'] if @customer && has_action_right?('create', params[:controller]) %>
+        <%= link_to t('New Customer Comm Record'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI::escape(new_customer_comm_record_path(:customer_id => @customer.id, :parent_record_id => @customer.id, :parent_resource => CustomerCommRecordx.customer_class.to_s.underscore.pluralize))}", :class => BUTTONS_CLS['action'] if @customer && has_action_right?('create', params[:controller]) %>
     </th>
   </tr>
 </table>
