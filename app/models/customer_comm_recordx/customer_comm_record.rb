@@ -21,7 +21,7 @@ module CustomerCommRecordx
     has_many :logs, :class_name => "Commonx::Log" 
     
     validates :subject, :contact_info, :via, :comm_date, :presence => true
-    validates :reported_by_id, :comm_category_id, :customer_id, :presence => true, :numericality => {:greater_than => 0}
+    validates :reported_by_id, :customer_id, :presence => true, :numericality => {:greater_than => 0}
     validates :content, :presence => true, :uniqueness => {:scope => :customer_id, :case_sensitive => false, :message => I18n.t('Duplicate Content')} 
     validates :comm_category_id, :numericality => {:greater_than => 0}, :if => 'comm_category_id.present?'
     
