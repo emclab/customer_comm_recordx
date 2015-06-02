@@ -2,8 +2,8 @@ require_dependency "customer_comm_recordx/application_controller"
 
 module CustomerCommRecordx
   class CustomerCommRecordsController < ApplicationController
-    before_filter :require_employee
-    before_filter :load_customer
+    before_action :require_employee
+    before_action :load_customer
     
     helper_method :contact_via
     
@@ -22,7 +22,7 @@ module CustomerCommRecordx
     end
   
     def create
-      @customer_comm_record = CustomerCommRecordx::CustomerCommRecord.new(params[:customer_comm_record], :as => :role_new)
+      @customer_comm_record = CustomerCommRecordx::CustomerCommRecord.new(new_params)
       @customer_comm_record.last_updated_by_id = session[:user_id]
       @customer_comm_record.reported_by_id = session[:user_id]
       if @customer_comm_record.save
@@ -45,7 +45,7 @@ module CustomerCommRecordx
     def update
       @customer_comm_record = CustomerCommRecordx::CustomerCommRecord.find_by_id(params[:id])
       @customer_comm_record.last_updated_by_id = session[:user_id]
-      if @customer_comm_record.update_attributes(params[:customer_comm_record], :as => :role_update)
+      if @customer_comm_record.update_attributes(edit_params)
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       else
         @erb_code = find_config_const('customer_comm_record_edit_view', 'customer_comm_recordx')
@@ -73,5 +73,18 @@ module CustomerCommRecordx
       @customer = CustomerCommRecordx.customer_class.find_by_id(params[:customer_id]) if params[:customer_id].present?
       @customer = CustomerCommRecordx.customer_class.find_by_id(CustomerCommRecordx::CustomerCommRecord.find_by_id(params[:id]).customer_id) if params[:id].present?
     end
+    
+    private
+    
+    def new_params
+      params.require(:customer_comm_record).permit(:comm_category_id, :comm_date, :contact_info, :content, :customer_id, :reported_by_id, 
+                    :subject, :via)
+    end
+    
+    def edit_params
+      params.require(:customer_comm_record).permit(:comm_category_id, :comm_date, :contact_info, :content, :customer_id, :reported_by_id, 
+                    :subject, :via, :void)
+    end
+
   end
 end

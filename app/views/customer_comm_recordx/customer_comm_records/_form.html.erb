@@ -2,6 +2,7 @@
   <%= render inline: @erb_code %>
   
 <% else %>
+<h4><%=@title%></h4>
 <%= simple_form_for(@customer_comm_record) do |f| %>    
  
   <%= f.input :customer_name, :label => t('Customer Name:'), :readonly => true, :required => false, :input_html => {:value => @customer.name} %> 

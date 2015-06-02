@@ -1,7 +1,30 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe "LinkTests" do
+RSpec.describe "LinkTests", type: :request do
   describe "GET /customer_comm_recordx_link_tests" do
+    mini_btn = 'btn btn-mini '
+    ActionView::CompiledTemplates::BUTTONS_CLS =
+        {'default' => 'btn',
+         'mini-default' => mini_btn + 'btn',
+         'action'       => 'btn btn-primary',
+         'mini-action'  => mini_btn + 'btn btn-primary',
+         'info'         => 'btn btn-info',
+         'mini-info'    => mini_btn + 'btn btn-info',
+         'success'      => 'btn btn-success',
+         'mini-success' => mini_btn + 'btn btn-success',
+         'warning'      => 'btn btn-warning',
+         'mini-warning' => mini_btn + 'btn btn-warning',
+         'danger'       => 'btn btn-danger',
+         'mini-danger'  => mini_btn + 'btn btn-danger',
+         'inverse'      => 'btn btn-inverse',
+         'mini-inverse' => mini_btn + 'btn btn-inverse',
+         'link'         => 'btn btn-link',
+         'mini-link'    => mini_btn +  'btn btn-link',
+         'right-span#'         => '2', 
+               'left-span#'         => '6', 
+               'offset#'         => '2',
+               'form-span#'         => '4'
+        }
     before(:each) do
       @pagination_config = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'pagination', :argument_value => 30)
       config = FactoryGirl.create(:engine_config, :engine_name => 'customer_comm_recordx', :engine_version => nil, :argument_name => 'contact_via', :argument_value => 'phone, email, fax, meeting')
@@ -70,47 +93,47 @@ describe "LinkTests" do
     end
     
     it "should display customer_comm_record index page" do
-      visit customer_comm_records_path
-      page.should have_content('Communication Records')
+      visit customer_comm_recordx.customer_comm_records_path
+      expect(page).to have_content('Communication Records')
     end
     
     it "should work with links on customer comm record index page" do
       crecord = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => @cust.id, :comm_category_id => @ccate.id, :via => 'phone')
-      visit customer_comm_records_path
+      visit customer_comm_recordx.customer_comm_records_path
       click_link crecord.id.to_s
-      visit customer_comm_records_path
+      visit customer_comm_recordx.customer_comm_records_path
       click_link 'New Customer Comm Record'
-      #visit customer_comm_records_path
+      #visit customer_comm_recordx.customer_comm_records_path
       #click_link 'Back'
-      visit customer_comm_records_path
+      visit customer_comm_recordx.customer_comm_records_path
       click_link 'Edit'
     end
     
     it "should create/edit comm record" do
       crecord = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => @cust.id, :comm_category_id => @ccate.id, :via => 'phone')
-      visit customer_comm_records_path(:customer_id => @cust.id)
-      save_and_open_page
+      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)
+      #save_and_open_page
       click_link 'Edit'
-      save_and_open_page
-      page.should have_content('Update Communication Record')
+      #save_and_open_page
+      expect(page).to have_content('Update Communication Record')
       fill_in 'customer_comm_record_subject', :with => 'a new subject'
       click_button 'Save'
-      visit customer_comm_records_path(:customer_id => @cust.id)
+      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)
       save_and_open_page
-      page.should have_content('a new subject')
+      expect(page).to have_content('a new subject')
       #bad data
-      visit customer_comm_records_path(:customer_id => @cust.id)
+      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)
       click_link 'Edit'
       fill_in 'customer_comm_record_content', :with => ''
       fill_in 'customer_comm_record_subject', :with => 'a sucker change'
       click_button 'Save'
-      visit customer_comm_records_path(:customer_id => @cust.id)
-      page.should_not have_content('a sucker change')
+      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)
+      expect(page).not_to have_content('a sucker change')
       
       #new
-      visit customer_comm_records_path(:customer_id => @cust.id)
+      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)
       click_link 'New Customer Comm Record'
-      page.should have_content('New Communication Record')
+      expect(page).to have_content('New Communication Record')
       fill_in 'customer_comm_record_content', :with => 'content'
       fill_in 'customer_comm_record_subject', :with => 'a new sucker'
       select('phone', :from => 'customer_comm_record_via')
@@ -119,12 +142,12 @@ describe "LinkTests" do
       fill_in 'customer_comm_record_contact_info', :with => 'a guy'
       click_button 'Save'
       save_and_open_page
-      visit customer_comm_records_path(:customer_id => @cust.id)      
-      page.should have_content('a new sucker')
+      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)      
+      expect(page).to have_content('a new sucker')
       #bad data
-      visit customer_comm_records_path(:customer_id => @cust.id)
+      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)
       click_link 'New Customer Comm Record'
-      page.should have_content('New Communication Record')
+      expect(page).to have_content('New Communication Record')
       fill_in 'customer_comm_record_content', :with => ''
       fill_in 'customer_comm_record_subject', :with => 'a new new sucker'
       select('phone', :from => 'customer_comm_record_via')
@@ -132,15 +155,15 @@ describe "LinkTests" do
       fill_in 'customer_comm_record_contact_info', :with => 'a guy'
       fill_in 'customer_comm_record_comm_date', :with => Date.today
       click_button 'Save'
-      visit customer_comm_records_path(:customer_id => @cust.id)
-      page.should_not have_content('a new new sucker')
+      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)
+      expect(page).not_to have_content('a new new sucker')
     end
     
     it "should show customer_comm_record page" do
       crecord = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => @cust.id, :comm_category_id => @ccate.id, :via => 'phone')
-      visit customer_comm_record_path(@cust, crecord)
+      visit customer_comm_recordx.customer_comm_record_path(@cust, crecord)
       #save_and_open_page
-      page.should have_content('Communication Record Info')
+      expect(page).to have_content('Communication Record Info')
     end
   end
 end

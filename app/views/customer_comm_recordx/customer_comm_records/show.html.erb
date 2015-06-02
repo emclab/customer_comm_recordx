@@ -46,7 +46,7 @@
 </p>
 <p>
   <b><%=t('Void') %>:</b>
-  <%= @customer_comm_record.void %>
+  <%= @customer_comm_record.void ? t('Yes') : t('No') %>
 </p> 
 <p>
   <b><%=t('Last Updated By')%>:</b>
