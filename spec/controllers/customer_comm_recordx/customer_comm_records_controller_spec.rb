@@ -36,13 +36,13 @@ module CustomerCommRecordx
         
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'customer_comm_recordx_customer_comm_records', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "CustomerCommRecordx::CustomerCommRecord.where(:void => false).where('comm_date > ?', 2.years.ago).
-          where(:customer_id => Kustomerx::Customer.where(:sales_id => session[:user_id]).select('id')).
+          where(:resource_id => Kustomerx::Customer.where(:sales_id => session[:user_id]).select('id')).
           order('comm_date DESC')")
         session[:employee] = true
         session[:user_id] = @u.id
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id, :sales_id => @u.id)
-        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id, :comm_category_id => @c_cate.id)
-        get 'index', { :customer_id => cust.id}
+        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers', :comm_category_id => @c_cate.id)
+        get 'index', { :resource_id => cust.id, :resource_string => 'kustomerx/customers'}
         expect(assigns(:customer_comm_records)).to eq([rec])
       end
       
@@ -50,14 +50,14 @@ module CustomerCommRecordx
      
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'customer_comm_recordx_customer_comm_records', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "CustomerCommRecordx::CustomerCommRecord.where(:void => false).where('comm_date > ?', 2.years.ago).
-          where(:customer_id => Kustomerx::Customer.where(:sales_id => Authentify::UserLevel.where(:sys_user_group_id => session[:user_privilege].user_group_ids).select('user_id')).select('id')).
+          where(:resource_id => Kustomerx::Customer.where(:sales_id => Authentify::UserLevel.where(:sys_user_group_id => session[:user_privilege].user_group_ids).select('user_id')).select('id')).
           order('comm_date DESC')")
         session[:employee] = true
         session[:user_id] = @u1.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u1.id)
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id, :sales_id => @u.id)
-        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id, :comm_category_id => @c_cate.id)
-        get 'index', { :customer_id => cust.id}
+        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers', :comm_category_id => @c_cate.id)
+        get 'index', { :resource_id => cust.id, :resource_string => 'kustomerx/customers'}
         expect(assigns(:customer_comm_records)).to eq([rec])
       end
       
@@ -65,7 +65,7 @@ module CustomerCommRecordx
         
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'customer_comm_recordx_customer_comm_records', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "CustomerCommRecordx::CustomerCommRecord.where(:void => false).where('comm_date > ?', 2.years.ago).
-          where(:customer_id => Kustomerx::Customer.where(:sales_id => Authentify::UserLevel.joins(:sys_user_group).
+          where(:resource_id => Kustomerx::Customer.where(:sales_id => Authentify::UserLevel.joins(:sys_user_group).
           where(:authentify_sys_user_groups => {:zone_id => session[:user_privilege].user_zone_ids}).select('user_id')).select('id')).
           order('comm_date DESC')")
         
@@ -73,7 +73,7 @@ module CustomerCommRecordx
         session[:user_id] = @u1.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u1.id)
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id, :sales_id => @u.id)
-        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id, :comm_category_id => @c_cate.id)
+        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers', :comm_category_id => @c_cate.id)
         get 'index'
         expect(assigns(:customer_comm_records)).to eq([rec])
       end
@@ -82,13 +82,13 @@ module CustomerCommRecordx
         
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'customer_comm_recordx_customer_comm_records', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "CustomerCommRecordx::CustomerCommRecord.where(:void => false).where('comm_date > ?', 2.years.ago).
-          where(:customer_id => Kustomerx::Customer.where(:sales_id => Authentify::UserRole.where(:role_definition_id => session[:user_privilege].user_role_ids).select('user_id')).select('id')).
+          where(:resource_id => Kustomerx::Customer.where(:sales_id => Authentify::UserRole.where(:role_definition_id => session[:user_privilege].user_role_ids).select('user_id')).select('id')).
           order('comm_date DESC')")        
         session[:employee] = true
         session[:user_id] = @u1.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u1.id)
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id, :sales_id => @u.id)
-        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id, :comm_category_id => @c_cate.id)
+        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers', :comm_category_id => @c_cate.id)
         get 'index'
         expect(assigns(:customer_comm_records)).to eq([rec])
       end
@@ -101,8 +101,8 @@ module CustomerCommRecordx
         session[:employee] = true
         session[:user_id] = @u.id
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id)
-        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id, :comm_category_id => @c_cate.id, :void => false)
-        get 'index', { :customer_id => cust.id}
+        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers', :comm_category_id => @c_cate.id, :void => false)
+        get 'index', { :resource_id => cust.id, :resource_string => 'kustomerx/customers'}
         #expect(response).to be_success
         expect(assigns(:customer_comm_records)).to eq([])
       end
@@ -112,8 +112,8 @@ module CustomerCommRecordx
         session[:employee] = true
         session[:user_id] = @u.id
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id)
-        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id, :comm_category_id => @c_cate.id, :void => false)
-        get 'index', { :customer_id => cust.id}
+        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers', :comm_category_id => @c_cate.id, :void => false)
+        get 'index', { :resource_id => cust.id, :resource_string => 'kustomerx/customers'}
         expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Insufficient Access Right! for action=index and resource=customer_comm_recordx/customer_comm_records")
       end
 =end
@@ -126,8 +126,8 @@ module CustomerCommRecordx
         session[:employee] = true
         session[:user_id] = @u.id
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id)
-        rec = FactoryGirl.attributes_for(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id)
-        get 'new', { :customer_id => cust.id}
+        rec = FactoryGirl.attributes_for(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers')
+        get 'new', { :resource_id => cust.id, :resource_string => 'kustomerx/customers'}
         expect(response).to be_success
       end
       
@@ -137,8 +137,8 @@ module CustomerCommRecordx
         session[:employee] = true
         session[:user_id] = @u.id
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id)
-        rec = FactoryGirl.attributes_for(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id)
-        get 'new', { :customer_id => cust.id}
+        rec = FactoryGirl.attributes_for(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers')
+        get 'new', { :resource_id => cust.id, :resource_string => 'kustomerx/customers'}
         expect(response).to be_success
       end
 
@@ -149,8 +149,8 @@ module CustomerCommRecordx
         session[:employee] = true
         session[:user_id] = @u.id
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id)
-        rec = FactoryGirl.attributes_for(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id)
-        get 'new', { :customer_id => cust.id}
+        rec = FactoryGirl.attributes_for(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers')
+        get 'new', { :resource_id => cust.id, :resource_string => 'kustomerx/customers'}
         expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Insufficient Access Right! for action=new and resource=customer_comm_recordx/customer_comm_records")
       end
 =end
@@ -163,9 +163,8 @@ module CustomerCommRecordx
         session[:employee] = true
         session[:user_id] = @u.id
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id)
-        rec = FactoryGirl.attributes_for(:customer_comm_recordx_customer_comm_record, :customer_id => nil)
-        get 'create', { :customer_comm_record => rec, :customer_name_autocomplete => nil, :customer_id => cust.id}
-        #expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Customer Communication Record Saved!")
+        rec = FactoryGirl.attributes_for(:customer_comm_recordx_customer_comm_record, :subject => nil)
+        get 'create', { :customer_comm_record => rec, :resource_id => cust.id, :resource_string => 'kustomerx/customers'}
         expect(response).to render_template("new")
       end
       
@@ -175,8 +174,8 @@ module CustomerCommRecordx
         session[:employee] = true
         session[:user_id] = @u.id
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id, :name => 'tester')
-        rec = FactoryGirl.attributes_for(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id)
-        get 'create', { :customer_comm_record => rec, :customer_name_autocomplete => cust.name, :customer_id => cust.id }
+        rec = FactoryGirl.attributes_for(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers')
+        get 'create', { :customer_comm_record => rec, :resource_id => cust.id, :resource_string => 'kustomerx/customers' }
         expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
       end
       
@@ -186,8 +185,8 @@ module CustomerCommRecordx
         session[:employee] = true
         session[:user_id] = @u.id
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id)
-        rec = FactoryGirl.attributes_for(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id)
-        get 'create', { :customer_comm_record => rec, :customer_id => cust.id}
+        rec = FactoryGirl.attributes_for(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers')
+        get 'create', { :customer_comm_record => rec, :resource_id => cust.id, :resource_string => 'kustomerx/customers'}
         expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
       end
     end
@@ -200,8 +199,8 @@ module CustomerCommRecordx
         session[:employee] = true
         session[:user_id] = @u.id
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id)
-        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id)
-        get 'edit', { :id => rec.id, :customer_id => cust.id}
+        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers')
+        get 'edit', { :id => rec.id, :resource_id => cust.id, :resource_string => 'kustomerx/customers'}
         expect(response).to be_success
       end
 =begin      
@@ -211,8 +210,8 @@ module CustomerCommRecordx
         session[:employee] = true
         session[:user_id] = @u.id
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id)
-        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id)
-        get 'edit', { :id => rec.id, :customer_id => cust.id}
+        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers')
+        get 'edit', { :id => rec.id, :resource_id => cust.id, :resource_string => 'kustomerx/customers'}
         expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Insufficient Access Right! for action=edit and resource=customer_comm_recordx/customer_comm_records")
       end
 =end
@@ -225,8 +224,8 @@ module CustomerCommRecordx
         session[:employee] = true
         session[:user_id] = @u.id
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id)
-        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id)
-        get 'update', { :customer_id => cust.id, :id => rec.id, :customer_comm_record => {:subject => 'new subject'}}
+        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers')
+        get 'update', { :id => rec.id, :customer_comm_record => {:subject => 'new subject'}}
         expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       end
       
@@ -237,8 +236,8 @@ module CustomerCommRecordx
         session[:employee] = true
         session[:user_id] = @u.id
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id)
-        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id)
-        get 'update', { :customer_id => cust.id, :id => rec.id, :customer_comm_record => {:subject => ''}}
+        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers')
+        get 'update', { :id => rec.id, :customer_comm_record => {:subject => ''}}
         expect(response).to render_template('edit')
       end
     end
@@ -251,8 +250,8 @@ module CustomerCommRecordx
         session[:employee] = true
         session[:user_id] = @u.id
         cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id)
-        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => cust.id, :comm_category_id => @c_cate.id)
-        get 'show', { :customer_id => cust.id, :id => rec.id}
+        rec = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :resource_id => cust.id, :resource_string => 'kustomerx/customers', :comm_category_id => @c_cate.id)
+        get 'show', { :id => rec.id}
         expect(response).to be_success
       end
     end

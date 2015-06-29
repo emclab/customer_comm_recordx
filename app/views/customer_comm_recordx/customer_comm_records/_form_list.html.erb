@@ -1,0 +1,51 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+  <div class="pigination"><%= will_paginate models %></div>
+  <h4><%=@title%></h4>
+  <table class="table table-striped">
+  <tr>
+    <th>#</th>
+    <th><%= t('Contact Date') %></th>
+    <th><%= t('Subject') %></th>
+    <th><%= t('Content') %></th>
+    <th><%= t('Via') %></th>
+    <th><%= t('Comm Category') %></th>
+    <th><%= t('Reporter') %></th>
+    <th></th>
+ 
+  </tr>
+
+<% models.each do |r| %>
+  <tr>
+  	<% if has_action_right?('show', 'customer_comm_recordx_customer_comm_records',r) %>
+  	  <td><%= link_to r.id.to_s, SUBURI + "/view_handler?index=1&url=#{customer_comm_record_path(r)}" %></td>
+  	<% else %>
+  	  <td><%= r.id %></td>
+  	<% end %>
+  	<td><%= r.comm_date.strftime("%Y/%m/%d") %></td>
+    <td><%= prt(r, :subject ) %></td>
+    <td><%= prt(r, :content)[0..40] %></td>
+    <td><%= prt(r, :via) %></td>
+    <td><%= prt(r, 'comm_category.name') %></td>
+    <td><%= prt(r, 'reported_by.name') %></td>    
+    <td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{CGI::escape(edit_customer_comm_record_path(r))}", :class => BUTTONS_CLS['action'] if has_action_right?('update', params[:controller], r) %></td>
+
+  </tr>
+<% end %>
+</table>
+<table class="table table-striped">
+  <tr>
+    <th>
+    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    	<%= link_to t('New Customer Comm Record'), SUBURI + "/view_handler?index=1&url=#{CGI::escape(new_customer_comm_record_path(:resource_id => @resource_id, :resource_string => @resource_string, :category => @category))}", :class => BUTTONS_CLS['action'] if  has_action_right?('create', params[:controller]) %>
+    </th>
+  </tr>
+</table>
+
+<% end %>
+
+

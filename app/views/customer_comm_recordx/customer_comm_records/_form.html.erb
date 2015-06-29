@@ -5,7 +5,6 @@
 <h4><%=@title%></h4>
 <%= simple_form_for(@customer_comm_record) do |f| %>    
  
-  <%= f.input :customer_name, :label => t('Customer Name:'), :readonly => true, :required => false, :input_html => {:value => @customer.name} %> 
   <%= f.input :comm_date, :label => t("Contact Date"), :as => :string, :readonly => readonly?(@customer_comm_record, 'comm_date') %>
   <%= f.input :subject, :label => t('About'), :readonly => readonly?(@customer_comm_record, 'subject') %>  
   <%= f.input :contact_info, :label => t('Contact Info'), :readonly => readonly?(@customer_comm_record, 'contact_info') %> 
@@ -28,7 +27,7 @@
                                                        :label_method => lambda {|r| "#{r.name}-#{r.user_levels.first.sys_user_group.zone.zone_name}"}, :value_method => :id%>
   <% end %>
   
-  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
   <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
 <% end %> 
 

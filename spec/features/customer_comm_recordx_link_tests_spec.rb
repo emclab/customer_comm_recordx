@@ -41,9 +41,7 @@ RSpec.describe "LinkTests", type: :request do
       ua10 = FactoryGirl.create(:user_access, :action => 'create_customer_comm_category', :resource => 'customerx_misc_definitions', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
       ua11 = FactoryGirl.create(:user_access, :action => 'index', :resource => 'customer_comm_recordx_customer_comm_records', :role_definition_id => @role.id, :rank => 1,
-        :sql_code => "CustomerCommRecordx::CustomerCommRecord.joins(:customer).
-        where(:kustomerx_customers => {:sales_id => session[:user_id]}).
-        order('comm_date DESC')")
+        :sql_code => "CustomerCommRecordx::CustomerCommRecord.order('comm_date DESC')")
       ua12 = FactoryGirl.create(:user_access, :action => 'show', :resource => 'customer_comm_recordx_customer_comm_records', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
       ua13 = FactoryGirl.create(:user_access, :action => 'create', :resource => 'customer_comm_recordx_customer_comm_records', :role_definition_id => @role.id, :rank => 1,
@@ -98,10 +96,10 @@ RSpec.describe "LinkTests", type: :request do
     end
     
     it "should work with links on customer comm record index page" do
-      crecord = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => @cust.id, :comm_category_id => @ccate.id, :via => 'phone')
+      crecord = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :resource_id => @cust.id, :resource_string => 'kustomerx/customers', :category => 'customer', :comm_category_id => @ccate.id, :via => 'phone')
       visit customer_comm_recordx.customer_comm_records_path
       click_link crecord.id.to_s
-      visit customer_comm_recordx.customer_comm_records_path
+      visit customer_comm_recordx.customer_comm_records_path(:resource_id => @cust.id, :resource_string => 'kustomerx/customers', :category => 'customer')
       click_link 'New Customer Comm Record'
       #visit customer_comm_recordx.customer_comm_records_path
       #click_link 'Back'
@@ -110,28 +108,28 @@ RSpec.describe "LinkTests", type: :request do
     end
     
     it "should create/edit comm record" do
-      crecord = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => @cust.id, :comm_category_id => @ccate.id, :via => 'phone')
-      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)
+      crecord = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :resource_id => @cust.id, :resource_string => 'kustomerx/customers', :comm_category_id => @ccate.id, :via => 'phone')
+      visit customer_comm_recordx.customer_comm_records_path(:resource_id => @cust.id, :resource_string => 'kustomerx/customers')
       #save_and_open_page
       click_link 'Edit'
       #save_and_open_page
       expect(page).to have_content('Update Communication Record')
       fill_in 'customer_comm_record_subject', :with => 'a new subject'
       click_button 'Save'
-      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)
+      visit customer_comm_recordx.customer_comm_records_path(:resource_id => @cust.id, :resource_string => 'kustomerx/customers')
       save_and_open_page
       expect(page).to have_content('a new subject')
       #bad data
-      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)
+      visit customer_comm_recordx.customer_comm_records_path(:resource_id => @cust.id, :resource_string => 'kustomerx/customers')
       click_link 'Edit'
       fill_in 'customer_comm_record_content', :with => ''
       fill_in 'customer_comm_record_subject', :with => 'a sucker change'
       click_button 'Save'
-      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)
+      visit customer_comm_recordx.customer_comm_records_path(:resource_id => @cust.id, :resource_string => 'kustomerx/customers')
       expect(page).not_to have_content('a sucker change')
       
       #new
-      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)
+      visit customer_comm_recordx.customer_comm_records_path(:resource_id => @cust.id, :resource_string => 'kustomerx/customers', :category => 'customer')
       click_link 'New Customer Comm Record'
       expect(page).to have_content('New Communication Record')
       fill_in 'customer_comm_record_content', :with => 'content'
@@ -142,10 +140,10 @@ RSpec.describe "LinkTests", type: :request do
       fill_in 'customer_comm_record_contact_info', :with => 'a guy'
       click_button 'Save'
       save_and_open_page
-      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)      
+      visit customer_comm_recordx.customer_comm_records_path(:resource_id => @cust.id, :resource_string => 'kustomerx/customers')      
       expect(page).to have_content('a new sucker')
       #bad data
-      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)
+      visit customer_comm_recordx.customer_comm_records_path(:resource_id => @cust.id, :resource_string => 'kustomerx/customers')
       click_link 'New Customer Comm Record'
       expect(page).to have_content('New Communication Record')
       fill_in 'customer_comm_record_content', :with => ''
@@ -155,12 +153,12 @@ RSpec.describe "LinkTests", type: :request do
       fill_in 'customer_comm_record_contact_info', :with => 'a guy'
       fill_in 'customer_comm_record_comm_date', :with => Date.today
       click_button 'Save'
-      visit customer_comm_recordx.customer_comm_records_path(:customer_id => @cust.id)
+      visit customer_comm_recordx.customer_comm_records_path(:resource_id => @cust.id, :resource_string => 'kustomerx/customers')
       expect(page).not_to have_content('a new new sucker')
     end
     
     it "should show customer_comm_record page" do
-      crecord = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :customer_id => @cust.id, :comm_category_id => @ccate.id, :via => 'phone')
+      crecord = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :resource_id => @cust.id, :resource_string => 'kustomerx/customers', :comm_category_id => @ccate.id, :via => 'phone')
       visit customer_comm_recordx.customer_comm_record_path(@cust, crecord)
       #save_and_open_page
       expect(page).to have_content('Communication Record Info')

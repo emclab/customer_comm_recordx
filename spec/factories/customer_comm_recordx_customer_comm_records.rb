@@ -2,7 +2,8 @@
 
 FactoryGirl.define do
   factory :customer_comm_recordx_customer_comm_record, :class => 'CustomerCommRecordx::CustomerCommRecord' do
-    customer_id 1
+    resource_id 1
+    resource_string 'kustomerx/customers'
     via "MyString"
     subject "MyString"
     contact_info "MyText"
@@ -12,5 +13,6 @@ FactoryGirl.define do
     reported_by_id 1
     comm_date "2013-10-13"
     void false
+    category "customer"
   end
 end

@@ -6,16 +6,18 @@
 <%= simple_form_for(@customer_comm_record) do |f| %>    
  
   <%= f.input :comm_date, :label => t("Contact Date"), :as => :string%>
-  <%= f.input :customer_name, :label => t('Customer'), :readonly => true, :required => false, :input_html => {:value => @customer.name} %> 
-  <%= f.input :customer_id, :as => :hidden, :input_html => {:value => @customer.id }%>
   <%= f.input :subject, :label => t('About') %>  
   <%= f.input :contact_info, :label => t('Contact Info'), :input_html => {:rows => 6} %>  
   <%= f.input :via, :label => t('Contact Via'), :collection => contact_via %>
   <%= f.input :content, :label => t('Content'), :input_html => {:rows => 4} %>   
   <%= f.input :comm_category_id, :label => t('Comm Category'), :collection => Commonx::MiscDefinition.where(:for_which => 'customer_comm_category').where(:active => true).order("ranking_index"),
-              :include_blank => true %>  
+              :include_blank => true %> 
+  <%= f.input :resource_id, :as => :hidden, :input_html => {:value => @resource_id} %>
+  <%= f.input :resource_string, :as => :hidden, :input_html => {:value => @resource_string} %>
+  <%= f.input :category, :as => :hidden, :input_html => {:value => @category} %>
+           
   
-  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
   <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
 <% end %> 
 

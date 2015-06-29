@@ -5,8 +5,6 @@ CustomerCommRecordx::Engine.routes.draw do
     collection do
       get :search
       get :search_results      
-      get :stats
-      get :stats_results
     end      
   end
 
