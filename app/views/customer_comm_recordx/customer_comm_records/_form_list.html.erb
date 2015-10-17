@@ -7,6 +7,7 @@
   <table class="table table-striped">
   <tr>
     <th>#</th>
+    <th><%= t('Customer Name') %></th>
     <th><%= t('Contact Date') %></th>
     <th><%= t('Subject') %></th>
     <th><%= t('Content') %></th>
@@ -24,6 +25,7 @@
   	<% else %>
   	  <td><%= r.id %></td>
   	<% end %>
+  	<td><%= prt(r, 'customer.name' ) %></td>
   	<td><%= r.comm_date.strftime("%Y/%m/%d") %></td>
     <td><%= prt(r, :subject ) %></td>
     <td><%= prt(r, :content)[0..40] %></td>
@@ -41,7 +43,7 @@
     	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    	<%= link_to t('New Customer Comm Record'), SUBURI + "/view_handler?index=1&url=#{CGI::escape(new_customer_comm_record_path(:resource_id => @resource_id, :resource_string => @resource_string, :category => @category))}", :class => BUTTONS_CLS['action'] if  has_action_right?('create', params[:controller]) %>
+    	<%= link_to t('New Customer Comm Record'), SUBURI + "/view_handler?index=1&url=#{CGI::escape(new_customer_comm_record_path(:customer_id => @customer.id))}", :class => BUTTONS_CLS['action'] if @customer && has_action_right?('create', params[:controller]) %>
     </th>
   </tr>
 </table>

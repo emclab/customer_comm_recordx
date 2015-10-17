@@ -1,3 +1,3 @@
 module CustomerCommRecordx
-  VERSION = "01"
+  VERSION = "02"
 end

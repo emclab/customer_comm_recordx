@@ -10,9 +10,9 @@ module CustomerCommRecordx
     def index
       @title= t("Communication Records")
       @customer_comm_records = params[:customer_comm_recordx_customer_comm_records][:model_ar_r]
-      @customer_comm_records = @customer_comm_records.where('customer_comm_recordx_customer_comm_records.resource_id = ?', @category) if @category 
-      @customer_comm_records = @customer_comm_records.where('customer_comm_recordx_customer_comm_records.resource_id = ?', @resource_id) if @resource_id 
-      @customer_comm_records = @customer_comm_records.where('TRIM(customer_comm_recordx_customer_comm_records.resource_string) = ?', @resource_string) if @resource_string
+      @customer_comm_records = @customer_comm_records.where('customer_comm_recordx_customer_comm_records.customer_id = ?', @customer.id) if @customer 
+      @customer_comm_records = @customer_comm_records.where('customer_comm_recordx_customer_comm_records.comm_category_id = ?', @comm_category_id) if @comm_category_id
+      @customer_comm_records = @customer_comm_records.where('customer_comm_recordx_customer_comm_records.via = ?', @via) if @via 
       @customer_comm_records = @customer_comm_records.page(params[:page]).per_page(@max_pagination)
       @erb_code = find_config_const('customer_comm_record_index_view', 'customer_comm_recordx')
     end
@@ -28,10 +28,8 @@ module CustomerCommRecordx
       @customer_comm_record.last_updated_by_id = session[:user_id]
       @customer_comm_record.reported_by_id = session[:user_id]
       if @customer_comm_record.save
-        redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
+        redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
       else
-        @resource_id = params[:customer_comm_record][:resource_id].to_i if params[:customer_comm_record].present? && params[:customer_comm_record][:resource_id].present?
-        @resource_string = params[:customer_comm_record][:resource_string].strip if params[:customer_comm_record].present? && params[:customer_comm_record][:resource_string].present?
         @erb_code = find_config_const('customer_comm_record_new_view', 'customer_comm_recordx')  
         flash.now[:error] = t('Data Error. Not Saved!')
         render 'new'
@@ -49,7 +47,7 @@ module CustomerCommRecordx
       @customer_comm_record = CustomerCommRecordx::CustomerCommRecord.find_by_id(params[:id])
       @customer_comm_record.last_updated_by_id = session[:user_id]
       if @customer_comm_record.update_attributes(edit_params)
-        redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
+        redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
       else
         @erb_code = find_config_const('customer_comm_record_edit_view', 'customer_comm_recordx')
         flash.now[:error] = t('Data Error. Not Updated!')
@@ -73,28 +71,26 @@ module CustomerCommRecordx
     end
     
     def load_record
-      @resource_id = params[:resource_id] if params[:resource_id].present?
-      @resource_string = params[:resource_string].strip if params[:resource_string].present?
-      @category = params[:category].strip if params[:category].present?
-      @resource_id = params[:customer_comm_record][:resource_id] if params[:customer_comm_record].present? && params[:customer_comm_record][:resource_id].present? 
-      @resource_string = params[:customer_comm_record][:resource_string].strip if params[:customer_comm_record].present? && params[:customer_comm_record][:resource_string].present?
-      @category = params[:customer_comm_record][:category].strip if params[:customer_comm_record].present? && params[:customer_comm_record][:category].present?
+      @customer = CustomerCommRecordx.customer_class.find_by_id(params[:customer_id]) if params[:customer_id].present?
+      @customer = CustomerCommRecordx.customer_class.find_by_id(params[:customer_comm_record][:customer_id]) if params[:customer_comm_record] && params[:customer_comm_record][:customer_id].present?
+      @comm_category_id = params[:comm_category_id] if params[:comm_category_id].present?
+      @via = params[:via] if params[:via].present?
       pr = CustomerCommRecordx::CustomerCommRecord.find_by_id(params[:id]) if params[:id].present?
-      @resource_id = pr.resource_id if pr.present?
-      @resource_string = pr.resource_string if pr.present?
-      @category = pr.category if pr.present?
+      @customer = CustomerCommRecordx.customer_class.find_by_id(pr.customer_id) if pr.present?
+      @comm_category_id = pr.comm_category_id if pr.present?
+      @via = pr.via if pr
     end
     
     private
     
     def new_params
-      params.require(:customer_comm_record).permit(:comm_category_id, :comm_date, :contact_info, :content, :resource_id, :reported_by_id, 
-                    :subject, :via, :category, :resource_string)
+      params.require(:customer_comm_record).permit(:comm_category_id, :comm_date, :contact_info, :content, :customer_id, :reported_by_id, 
+                    :subject, :via, :void)
     end
     
     def edit_params
       params.require(:customer_comm_record).permit(:comm_category_id, :comm_date, :contact_info, :content, :reported_by_id, 
-                    :subject, :via, :void)
+                    :subject, :via, :void, :customer_id)
     end
 
   end

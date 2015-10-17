@@ -9,29 +9,34 @@
 <p class="notice"><%= notice %></p>
 
 <p>
-  <b><%=t('Reported By')%>:</b>
+  <b><%=t('Customer Name')%></b>
+  <%= @customer_comm_record.customer.name %>
+</p>
+
+<p>
+  <b><%=t('Reported By')%></b>
   <%= @customer_comm_record.reported_by.name %>
 </p>
 
 <p>
-  <b><%=t('Contact Date')%>:</b>
+  <b><%=t('Contact Date')%></b>
   <%= @customer_comm_record.comm_date.strftime("%Y/%m/%d") %>
 </p> 
 <p>
-  <b><%=t('Contact Via')%>:</b>
+  <b><%=t('Contact Via')%></b>
   <%= @customer_comm_record.comm_category.try(:name) if @customer_comm_record.comm_category_id.present? %>
 </p> 
 <p>
-  <b><%=t('About')%>:</b>
+  <b><%=t('About')%></b>
   <%= @customer_comm_record.subject %>
 </p>
  
 <p>
-  <b><%=t('Contact Info')%>:</b>
+  <b><%=t('Contact Info')%></b>
   <%= @customer_comm_record.contact_info %>
 </p>
 <p>
-  <b><%=t('Content')%>:</b>
+  <b><%=t('Content')%></b>
   <%= @customer_comm_record.content %>
 </p>
  
@@ -40,15 +45,15 @@
   <%= @customer_comm_record.via %>
 </p>
 <p>
-  <b><%=t('Void') %>:</b>
+  <b><%=t('Void') %></b>
   <%= @customer_comm_record.void ? t('Yes') : t('No') %>
 </p> 
 <p>
-  <b><%=t('Last Updated By')%>:</b>
+  <b><%=t('Last Updated By')%></b>
   <%= @customer_comm_record.last_updated_by.name %>
 </p>
 <p>
-  <b>Logs:</b>	
+  <b>Logs</b>	
     <ul>
   <% Commonx::Log.where('resource_id = ? AND resource_name = ?', @customer_comm_record.id, params[:controller].sub('/', '_')).order("created_at DESC").each do |p| %>
     <li>

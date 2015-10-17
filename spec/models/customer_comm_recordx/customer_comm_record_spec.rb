@@ -22,21 +22,11 @@ module CustomerCommRecordx
       expect(r).not_to be_valid
     end
     
-    it "should reject nil resource_id" do
-      r = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :resource_id => nil)
+    it "should reject nil customer_id" do
+      r = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :customer_id => nil)
       expect(r).not_to be_valid
     end
 
-    it "should reject nil resource_string" do
-      r = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :resource_string => nil)
-      expect(r).not_to be_valid
-    end
-
-    it "should reject nil category" do
-      r = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :category => nil)
-      expect(r).not_to be_valid
-    end
-        
     it "should reject 0 reported_by_id" do
       r = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :reported_by_id => 0)
       expect(r).not_to be_valid
@@ -50,7 +40,7 @@ module CustomerCommRecordx
     
     it "shold be OK with dup content for different customer" do
       r = FactoryGirl.create(:customer_comm_recordx_customer_comm_record, :content => 'this is a test')
-      r1 = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :content => 'This Is A Test', :resource_id => r.resource_id + 1)
+      r1 = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :content => 'This Is A Test', :customer_id => r.customer_id + 1)
       expect(r1).to be_valid
     end
     
@@ -59,13 +49,18 @@ module CustomerCommRecordx
       expect(r).not_to be_valid
     end
     
+    it "should reject nil comm category id" do
+      r = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :comm_category_id => nil)
+      expect(r).to be_valid
+    end
+    
     it "should reject nil comm date" do
       r = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :comm_date => nil)
       expect(r).not_to be_valid
     end
     
-    it "should reject 0 resource_id" do
-      r = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :resource_id => 0)
+    it "should reject 0 customer_id" do
+      r = FactoryGirl.build(:customer_comm_recordx_customer_comm_record, :customer_id => 0)
       expect(r).not_to be_valid
     end
   end

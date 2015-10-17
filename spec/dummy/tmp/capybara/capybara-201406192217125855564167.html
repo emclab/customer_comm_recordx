@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dummy</title>
+  <link href="/assets/application.css" media="all" rel="stylesheet" type="text/css" />
+  <script src="/assets/application.js" type="text/javascript"></script>
+  
+</head>
+<body>
+
+<div id='main_body'>
+<h4><span class="translation_missing" title="translation missing: en.Update Customer Comm Record">Update Customer Comm Record</span></h4>
+
+<form accept-charset="UTF-8" action="/customer_comm_recordx/customer_comm_records/1" class="simple_form edit_customer_comm_record" id="edit_customer_comm_record_1" method="post" novalidate="novalidate"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="put" /></div>    
+ 
+  <div class="input string optional readonly customer_comm_record_customer_name"><label class="string optional control-label" for="customer_comm_record_customer_name"><span class="translation_missing" title="translation missing: en.Customer Name:">Customer Name:</span></label><input class="string optional readonly" id="customer_comm_record_customer_name" name="customer_comm_record[customer_name]" readonly="readonly" size="50" type="text" value="My name" /></div> 
+  <div class="input string required customer_comm_record_comm_date"><label class="string required control-label" for="customer_comm_record_comm_date"><abbr title="required">*</abbr> <span class="translation_missing" title="translation missing: en.Contact Date">Contact Date</span></label><input class="string required" id="customer_comm_record_comm_date" name="customer_comm_record[comm_date]" size="50" type="text" value="2013-10-13" /></div>
+  <div class="input string required customer_comm_record_subject"><label class="string required control-label" for="customer_comm_record_subject"><abbr title="required">*</abbr> <span class="translation_missing" title="translation missing: en.About">About</span></label><input class="string required" id="customer_comm_record_subject" name="customer_comm_record[subject]" size="50" type="text" value="MyString" /></div>  
+  <div class="input text required customer_comm_record_contact_info"><label class="text required control-label" for="customer_comm_record_contact_info"><abbr title="required">*</abbr> <span class="translation_missing" title="translation missing: en.Contact Info">Contact Info</span></label><textarea class="text required" cols="40" id="customer_comm_record_contact_info" name="customer_comm_record[contact_info]" rows="20">
+MyText</textarea></div> 
+    <div class="input select required customer_comm_record_via"><label class="select required control-label" for="customer_comm_record_via"><abbr title="required">*</abbr> <span class="translation_missing" title="translation missing: en.Contact Via">Contact Via</span></label><select class="select required" id="customer_comm_record_via" name="customer_comm_record[via]"><option value=""></option>
+<option value="phone">phone</option>
+<option value="email">email</option>
+<option value="fax">fax</option>
+<option value="meeting">meeting</option></select></div>
+  <div class="input text required customer_comm_record_content"><label class="text required control-label" for="customer_comm_record_content"><abbr title="required">*</abbr> <span class="translation_missing" title="translation missing: en.Content">Content</span></label><textarea class="text required" cols="40" id="customer_comm_record_content" name="customer_comm_record[content]" rows="4">
+MyText</textarea></div>   
+  <div class="input select required customer_comm_record_comm_category_id"><label class="select required control-label" for="customer_comm_record_comm_category_id"><abbr title="required">*</abbr> <span class="translation_missing" title="translation missing: en.Comm Category">Comm Category</span></label><select class="select required" id="customer_comm_record_comm_category_id" name="customer_comm_record[comm_category_id]"><option value=""></option>
+<option value="5" selected="selected">MyString</option></select></div>  
+    <div class="input string optional readonly customer_comm_record_void_name"><label class="string optional control-label" for="customer_comm_record_void_name"><span class="translation_missing" title="translation missing: en.Void">Void</span></label><input class="string optional readonly" id="customer_comm_record_void_name" name="customer_comm_record[void_name]" readonly="readonly" size="50" type="text" value="<span class="translation_missing" title="translation missing: en.No">No</span>" /></div>
+    <div class="input select required customer_comm_record_reported_by_id"><label class="select required control-label" for="customer_comm_record_reported_by_id"><abbr title="required">*</abbr> <span class="translation_missing" title="translation missing: en.Reported By">Reported By</span></label><select class="select required" id="customer_comm_record_reported_by_id" name="customer_comm_record[reported_by_id]"><option value=""></option>
+<option value="1" selected="selected">Test User-hq</option></select></div>
+  
+  <a href="/authentify/view_handler?index=0" class="btn btn-primary"><span class="translation_missing" title="translation missing: en.Back">Back</span></a>
+  <input class="btn btn btn-primary" name="commit" type="submit" value="<span class="translation_missing" title="translation missing: en.Save">Save</span>" />  
+</form>
+
+
+</div>
+
+
+
+</body>
+</html>
