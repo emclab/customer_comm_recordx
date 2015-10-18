@@ -85,12 +85,12 @@ module CustomerCommRecordx
     
     def new_params
       params.require(:customer_comm_record).permit(:comm_category_id, :comm_date, :contact_info, :content, :customer_id, :reported_by_id, 
-                    :subject, :via, :void)
+                    :subject, :via, :void, :followup_to_id)
     end
     
     def edit_params
       params.require(:customer_comm_record).permit(:comm_category_id, :comm_date, :contact_info, :content, :reported_by_id, 
-                    :subject, :via, :void, :customer_id)
+                    :subject, :via, :void, :customer_id, :followup_to_id)
     end
 
   end

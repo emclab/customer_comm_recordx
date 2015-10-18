@@ -1,8 +1,7 @@
-<% if @view_in_config && @erb_code %>
+<% if @erb_code %>
   <%= render inline: ERB.new(@erb_code).result(binding) %>
   
 <% else %>
-<div id='main_body'>
 
 <h4><%=@title %></h4>
  
@@ -74,6 +73,6 @@
   </tr>
 </table>
 
-</div>
+
 
 <% end %>
