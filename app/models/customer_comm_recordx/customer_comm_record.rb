@@ -7,7 +7,7 @@ module CustomerCommRecordx
     belongs_to :reported_by, :class_name => 'Authentify::User'  
     belongs_to :customer, :class_name => CustomerCommRecordx.customer_class.to_s 
     belongs_to :followup_to, :class_name => 'CustomerCommRecordx::CustomerCommRecord', :foreign_key => 'followup_to_id'
-    has_many :followers, :class_name => 'CustomerCommRecordx::CustomerCommREcord', :foreign_key => 'followup_to_id'
+    has_many :followups, :class_name => 'CustomerCommRecordx::CustomerCommREcord', :foreign_key => 'followup_to_id'
     
     validates :subject, :contact_info, :via, :comm_date, :customer_id, :presence => true
     validates :reported_by_id, :customer_id, :presence => true, :numericality => {:greater_than => 0}
