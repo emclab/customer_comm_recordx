@@ -12,5 +12,6 @@ FactoryGirl.define do
     reported_by_id 1
     comm_date Date.today
     void false
+    fort_token '123456789'
   end
 end

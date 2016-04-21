@@ -9,5 +9,6 @@ FactoryGirl.define do
     cell_phone "MyString5"
     email "email@b.com"
     brief_note "MyText8"
+    fort_token '123456789'
   end
 end

@@ -6,5 +6,6 @@ FactoryGirl.define do
     city_county_district "city county"
     add_line "123 road"
     customer_id 1
+    fort_token '123456789'
   end
 end

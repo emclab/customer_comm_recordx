@@ -21,11 +21,12 @@ module CustomerCommRecordx
       @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur])
       ur1 = FactoryGirl.create(:user_role, :role_definition_id => @role.id)
       ul1 = FactoryGirl.build(:user_level, :sys_user_group_id => ug.id)
-      @u1 = FactoryGirl.create(:user, :user_levels => [ul1], :user_roles => [ur1], :email => 'newnew@a.com', :login => 'newnew', :name => 'verynew')
+      @u1 = FactoryGirl.create(:user, :user_levels => [ul1], :user_roles => [ur1], :email => 'newnew@a.com', :login => 'newnew112', :name => 'verynew')
       
       @cust = FactoryGirl.create(:kustomerx_customer, :active => true, :last_updated_by_id => @u.id, :customer_status_category_id => @cate.id)
         
       session[:user_role_ids] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id).user_role_ids
+      session[:fort_token] = @u.fort_token
     end
     render_views
     

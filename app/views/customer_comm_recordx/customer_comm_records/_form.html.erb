@@ -24,7 +24,7 @@
   <% if readonly?(@customer_comm_record, 'reported_by_id')%>
     <%= f.input :reported_by_name, :label => t('Reported By'), :input_html => {:value => @customer_comm_record.reported_by.name }, :readonly => true, :required => false %>
   <% else %>
-    <%= f.input :reported_by_id, :label => t('Reported By'), :collection => Authentify::UsersHelper.return_users('create', 'customer_comm_recordx_customer_comm_records'),
+    <%= f.input :reported_by_id, :label => t('Reported By'), :collection => return_users('create', 'customer_comm_recordx_customer_comm_records'),
                                                        :label_method => lambda {|r| "#{r.name}-#{r.user_levels.first.sys_user_group.zone.zone_name}"}, :value_method => :id%>
   <% end %>
   

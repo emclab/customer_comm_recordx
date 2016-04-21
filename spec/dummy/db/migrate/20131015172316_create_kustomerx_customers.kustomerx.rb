@@ -23,6 +23,7 @@ class CreateKustomerxCustomers < ActiveRecord::Migration
       t.string :web
 
       t.timestamps
+      t.string :fort_token
     end
     
     add_index :kustomerx_customers, :name
