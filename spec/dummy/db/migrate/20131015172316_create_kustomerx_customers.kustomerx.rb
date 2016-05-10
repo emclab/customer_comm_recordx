@@ -16,7 +16,7 @@ class CreateKustomerxCustomers < ActiveRecord::Migration
       t.integer :quality_system_id
       t.string :employee_num
       t.string :revenue
-      t.text :customer_eval
+      t.string :email
       t.text :main_biz
       t.text :customer_specific
       t.text :note
