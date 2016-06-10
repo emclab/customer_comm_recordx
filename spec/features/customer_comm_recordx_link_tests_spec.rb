@@ -77,7 +77,7 @@ RSpec.describe "LinkTests", type: :request do
         :sql_code => "") 
       ur = FactoryGirl.create(:user_role, :role_definition_id => @role.id)
       ul = FactoryGirl.build(:user_level, :sys_user_group_id => ug.id)
-      @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur], :login => 'thistest', :password => 'password', :password_confirmation => 'password')
+      @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur], :login => 'thistest', :password => 'password1', :password_confirmation => 'password1')
       lsource = FactoryGirl.create(:commonx_misc_definition, :for_which => 'sales_lead_source')
       @cate2 = FactoryGirl.create(:commonx_misc_definition, :for_which => 'customer_status', :name => 'newnew cate', :last_updated_by_id => @u.id)
       @cust = FactoryGirl.create(:kustomerx_customer, :zone_id => z.id, :sales_id => @u.id, :last_updated_by_id => @u.id, :quality_system_id => qs.id, :addresses => [add])
@@ -88,13 +88,16 @@ RSpec.describe "LinkTests", type: :request do
       visit '/'
       #save_and_open_page
       fill_in "login", :with => @u.login
-      fill_in "password", :with => 'password'
+      fill_in "password", :with => @u.password
       click_button 'Login'
     end
     
     it "should display customer_comm_record index page" do
       visit customer_comm_recordx.customer_comm_records_path
       expect(page).to have_content('Communication Records')
+      expect(Authentify::SysLog.all.count).to eq(1)
+      expect(Authentify::SysLog.all.first.resource).to eq('customer_comm_recordx/customer_comm_records')
+      expect(Authentify::SysLog.all.first.user_id).to eq(@u.id)
     end
     
     it "should work with links on customer comm record index page" do
