@@ -13,6 +13,8 @@ module CustomerCommRecordx
     before_action :load_session_variable, :only => [:new, :edit]  #for parent_record_id & parent_resource in check_access_right
     after_action :delete_session_variable, :only => [:create, :update]  #for parent_record_id & parent_resource in check_access_right
     
+    helper_method :return_users, :return_misc_definitions
+    
     protected
   
     def max_pagination
